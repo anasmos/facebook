@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Users profiles
+  each user, i in users
+    li.list-group-item    
+      h5 This is profile of:  #{user.name}
+      a.btn.btn-primary(href='/users/profile/'+user.id) User Profile 
+      br

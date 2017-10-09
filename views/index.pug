@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1 #{title}
+  ul.list-group
+    each article, i in articles
+      if user
+       li.list-group-item
+        h4 Post   
+        h5 whritin by #{article.author}
+        p= article.body
+        hr
+        h6 #{article.like} person like your post
+        form(class='like' method='POST', action='/articles/like')
+          #form-group
+            input.form-control(type="hidden", name="postid", value=article.id)
+          br
+          input.btn.btn-primary(type='submit',value='like')
+        br
+        if user.id == article.userid
+          a.btn.btn-default(href='/articles/edit/'+article.id) Edit 
+          a.btn.btn-danger.delete-article(href='#',data-id=article.id) Delete
+        each comment, i in comments
+          if comment.postid == article.id
+            li.list-group-item    
+              h5 comment by #{comment.name}
+              p= comment.comment
+              br
+              if user.id==comment.userid
+                a.btn.btn-default(href='/articles/edit_comment/'+comment.id) Edit
+                a.btn.btn-danger.delete-comment(href='#',comment-id=comment.id) remove 
+            hr
+        form(method='POST', action='/articles/comment')
+          #form-group
+            label Comment:
+            input.form-control(name='comment', type='text')
+          #form-group
+            input.form-control(type="hidden", name="postid", value=article.id)
+          br
+          input.btn.btn-primary(type='submit',value='comment')
+          hr
